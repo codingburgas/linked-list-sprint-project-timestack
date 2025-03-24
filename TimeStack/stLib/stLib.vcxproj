@@ -132,6 +132,14 @@
   <ItemGroup>
     <ClCompile Include="TimeStack.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TimeStack\TimeStack.vcxproj">
+      <Project>{e542a77f-ea99-4ad6-8b0f-0f7cea6a9d40}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TimeStack.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
