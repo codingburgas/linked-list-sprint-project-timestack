@@ -1,5 +1,5 @@
 #pragma once
 
-void drawTopDesign();
-void drawBottomDesign();
+
 void showMenu();
+void startWindow();
