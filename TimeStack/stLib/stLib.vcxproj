@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TimeStack.cpp" />
+    <ClCompile Include="DatabaseManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeStack\TimeStack.vcxproj">
@@ -138,7 +138,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TimeStack.h" />
+    <ClInclude Include="DatabaseManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
