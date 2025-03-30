@@ -1,9 +1,11 @@
-﻿#include "includes.h"
+﻿#include "precompiler.h"
 
 void startWindow()
 {
 
 	int screen;
+
+	void loadEvents();
 	showMenu();
 
 	std::cin >> screen;
@@ -14,7 +16,7 @@ void startWindow()
 	case 1:
 
 		system("cls");
-		//addEvent();
+		addEvent();
 
 		break;
 
@@ -33,6 +35,13 @@ void startWindow()
 		break;
 
 	case 4:
+
+		system("cls");
+		listEvents();
+
+		break;
+
+	case 5:
 
 		system("cls");
 		gameOn = false;
@@ -74,5 +83,6 @@ void showMenu()
 	std::cout << "1. Add an event" << std::endl;
 	std::cout << "2. Edit an event" << std::endl;
 	std::cout << "3. Delete an event" << std::endl;
-	std::cout << "4. Exit" << std::endl;
+	std::cout << "4. List events" << std::endl;
+	std::cout << "5. Exit" << std::endl;
 }

@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseManager.cpp" />
+    <ClCompile Include="entries.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TimeStack\TimeStack.vcxproj">
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseManager.h" />
+    <ClInclude Include="events.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
