@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <list>
+#include <sstream>
 
 #include "../stLib/DatabaseManager.h"
 #include "Menu.h"
