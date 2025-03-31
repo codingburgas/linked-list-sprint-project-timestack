@@ -8,23 +8,18 @@ void addEvent() {
     std::cin.ignore();
     std::cout << "Enter event name: ";
     std::getline(std::cin, newEvent.name);
+    system("cls");
     events.push_back(newEvent);
-    saveEvents();
+    saveEvents();  // Save after adding
 }
 
-
 void saveEvents() {
-    std::ofstream file(filename, std::ios::trunc);  // Use std::ios::trunc to overwrite the file
+    std::ofstream file(filename, std::ios::app);  // Append mode instead of truncating
     if (!file) {
         std::cerr << "Error: Could not open file for writing.\n";
         return;
     }
 
-    // Print to console for debugging
-    std::cout << "Saving events:\n";
-    for (const Event& event : events) {
-        std::cout << event.date << " " << event.name << "\n";  // Debugging output
-        file << event.date << " " << event.name << "\n";
-    }
+    file << events.back().date << " " << events.back().name << "\n";  // Append only the new event
     file.close();
 }

@@ -1,11 +1,10 @@
 #include "precompiler.h"
-
-bool gameOn = true;
+#include "../stLib/DatabaseManager.h"
 
 
 int main()
 {
-
+    loadEvents();
     while (gameOn != false)
     {
 
