@@ -9,7 +9,7 @@ bool isValidDate(const std::string& date) {
 
     if (day < 1 || day > 31) return false;
     if (month < 1 || month > 12) return false;
-    if (year < 1900 || year > 2100) return false;
+    if (year > 2100) return false;
 
     return true;
 }

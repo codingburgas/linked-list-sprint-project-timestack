@@ -30,7 +30,7 @@ void startWindow()
 	case 3:
 
 		system("cls");
-		//deleteEvent();
+		deleteEvent();
 
 		break;
 

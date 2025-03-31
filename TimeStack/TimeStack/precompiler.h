@@ -7,6 +7,7 @@
 #include <string>
 #include <list>
 #include <sstream>
+#include <algorithm>
 
 #include "../stLib/DatabaseManager.h"
 #include "Menu.h"
