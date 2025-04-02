@@ -29,6 +29,10 @@ void addEvent() {
 
     std::cout << "Enter event name: ";
     std::getline(std::cin, newEvent.name);
+
+    std::cout << "Enter event description: "; // Add this line
+    std::getline(std::cin, newEvent.description); // Add this line
+
     system("cls");
     events.push_back(newEvent);
     saveEvents();
@@ -41,6 +45,6 @@ void saveEvents() {
         return;
     }
 
-    file << events.back().date << " " << events.back().name << "\n";  // Append only the new event
+    file << events.back().date << " " << events.back().name << " " << events.back().description << "\n";  // Append the new event with description
     file.close();
 }
