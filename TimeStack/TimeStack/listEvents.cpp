@@ -12,7 +12,6 @@ void listEvents() {
     }
 }
 
-
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(' ');
     size_t last = str.find_last_not_of(' ');
@@ -30,33 +29,25 @@ void deleteEvent() {
     std::cout << "Enter the name of the event: ";
     std::getline(std::cin, eventName);
 
-    // Combine the input into "DD-MM-YYYY" format
-    std::string fullDate = trim(day) + "-" + trim(month) + "-" + trim(year);
-    eventName = trim(eventName);  // Ensure event name has no leading/trailing spaces
-
-    // Debugging lines: show the formatted input
-    std::cout << "Full Date Input: " << fullDate << std::endl;
-    std::cout << "Event Name Input: " << eventName << std::endl;
+    // Format the date properly
+    std::string fullDate = trim(day) + " " + trim(month) + " " + trim(year);
+    eventName = trim(eventName);
 
     bool found = false;
-    std::list<Event> tempEvents;
+    auto it = events.begin();
 
-    // Loop through the events list and find the matching event
-    for (const Event& e : events) {
-        // Debugging lines: show the stored event details
-        std::cout << "Stored Event Date: " << e.date << " | Stored Event Name: " << e.name << std::endl;
-
-        // Check if both the date and name match
-        if (e.date == fullDate && e.name == eventName) {
+    while (it != events.end()) {
+        if (it->date == fullDate && it->name == eventName) {
+            it = events.erase(it); // Correctly delete the event
             found = true;
-            continue;  // Skip adding this event (deleting it)
         }
-        tempEvents.push_back(e);  // Keep other events in tempEvents
+        else {
+            ++it;
+        }
     }
 
     if (found) {
-        events = tempEvents;  // Update the events list with the remaining events
-        saveEvents();  // Save the modified list back to the file
+        saveEvents(); // Save the updated list to the file
         std::cout << "Event deleted successfully.\n";
     }
     else {

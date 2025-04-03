@@ -2,14 +2,12 @@
 #include "../stLib/DatabaseManager.h"
 
 
-int main()
-{
-    loadEvents();
-    while (gameOn != false)
-    {
 
+int main() {
+    loadEvents(); 
+
+    while (gameOn) {
         startWindow();
-
     }
 
 }
