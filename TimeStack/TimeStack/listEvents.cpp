@@ -2,9 +2,16 @@
 
 void listEvents() {
     for (const auto& event : events) {
-        std::cout << event.date << " - " << event.name << "\n";
+        std::cout << event.date << " - " << event.name;
+
+        if (!event.description.empty()) {
+            std::cout << " - " << event.description;
+        }
+
+        std::cout << "\n";
     }
 }
+
 
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(' ');
