@@ -2,7 +2,7 @@
 
 int main() {
     loadEvents();
-    while (true) {
+    while (gameOn != false) {
         startWindow();
     }
 }

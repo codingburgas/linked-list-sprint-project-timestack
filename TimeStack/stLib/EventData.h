@@ -6,8 +6,9 @@
 struct Event {
     std::string date;
     std::string name;
-    std::string description; 
+    std::string description;
+    Event* next;
 };
 
-extern std::list<Event> events;  // Declaration of events list
-extern const std::string filename;  // Declaration of filename
+extern Event* head;
+const std::string filename = "entries.txt";

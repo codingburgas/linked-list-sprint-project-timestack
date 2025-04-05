@@ -10,47 +10,56 @@ void startWindow()
 
 	std::cin >> screen;
 
-	switch (screen)
+	if (screen <= 5 && screen > 0)
 	{
+		switch (screen)
+		{
 
-	case 1:
+		case 1:
+
+			system("cls");
+			addEvent();
+
+			break;
+
+		case 2:
+
+			system("cls");
+			//editEvent();
+
+			break;
+
+		case 3:
+
+			system("cls");
+			deleteEvent();
+
+			break;
+
+		case 4:
+
+			system("cls");
+			listEvents();
+
+			break;
+
+		case 5:
+
+			system("cls");
+			gameOn = false;
+
+		default:
+			system("cls");
+
+			gameOn = false;
+		}
+	}
+	else {
 
 		system("cls");
-		addEvent();
-
-		break;
-
-	case 2:
-
-		system("cls");
-		//editEvent();
-
-		break;
-
-	case 3:
-
-		system("cls");
-		deleteEvent();
-
-		break;
-
-	case 4:
-
-		system("cls");
-		listEvents();
-
-		break;
-
-	case 5:
-
-		system("cls");
+		std::cout << "Invalid input";
 		gameOn = false;
 
-	default:
-		system("cls");
-		std::cout << "Invalid input" << std::endl;
-		
-		gameOn = false;
 	}
 }
 

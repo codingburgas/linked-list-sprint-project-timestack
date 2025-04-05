@@ -1,5 +1,12 @@
 #include "precompiler.h"
 
+std::string trim(const std::string& str) {
+    size_t first = str.find_first_not_of(' ');
+    size_t last = str.find_last_not_of(' ');
+    if (first == std::string::npos || last == std::string::npos) return "";
+    return str.substr(first, last - first + 1);
+}
+
 bool isValidDate(int day, int month, int year) {
     if (day < 1 || day > 31) return false;
     if (month < 1 || month > 12) return false;
@@ -7,41 +14,55 @@ bool isValidDate(int day, int month, int year) {
     return true;
 }
 
-std::string trim(const std::string& str) {
-    size_t first = str.find_first_not_of(' ');
-    size_t last = str.find_last_not_of(' ');
-    if (first == std::string::npos || last == std::string::npos) {
-        return "";
+void saveEvents() {
+    std::ofstream file(filename);
+    if (!file) {
+        std::cerr << "Error: Could not open file for writing.\n";
+        return;
     }
-    return str.substr(first, last - first + 1);
+
+    Event* current = head;
+    while (current) {
+        file << current->date << " - " << current->name;
+        if (!current->description.empty()) {
+            file << " - " << current->description;
+        }
+        file << "\n";
+        current = current->next;
+    }
+
+    file.close();
 }
 
 void addEvent() {
-    Event newEvent;
+    Event* newEvent = new Event;
     int day, month, year;
-
     do {
         std::cout << "Enter date (DD MM YYYY): ";
         std::cin >> day >> month >> year;
-
         if (!isValidDate(day, month, year)) {
             std::cout << "Invalid date format! Please enter again.\n";
         }
         else {
-            newEvent.date = std::to_string(day) + " " + std::to_string(month) + " " + std::to_string(year);
+            newEvent->date = std::to_string(day) + " " + std::to_string(month) + " " + std::to_string(year);
         }
-
-    } while (!isValidDate(day, month, year));
+    } 
+    
+while (!isValidDate(day, month, year));
 
     std::cin.ignore();
     std::cout << "Enter event name: ";
-    std::getline(std::cin, newEvent.name);
-
+    std::getline(std::cin, newEvent->name);
     std::cout << "Enter event description: ";
-    std::getline(std::cin, newEvent.description);
+    std::getline(std::cin, newEvent->description);
+    newEvent->next = nullptr;
 
-    system("cls");
-    events.push_back(newEvent);
+    if (!head) head = newEvent;
+    else {
+        Event* temp = head;
+        while (temp->next) temp = temp->next;
+        temp->next = newEvent;
+    }
     saveEvents();
 }
 
@@ -56,16 +77,20 @@ void deleteEvent() {
     std::string fullDate = trim(day) + " " + trim(month) + " " + trim(year);
     eventName = trim(eventName);
 
+    Event* temp = head;
+    Event* prev = nullptr;
     bool found = false;
-    auto it = events.begin();
-    while (it != events.end()) {
-        if (it->date == fullDate && it->name == eventName) {
-            it = events.erase(it);
+
+    while (temp) {
+        if (temp->date == fullDate && temp->name == eventName) {
+            if (!prev) head = temp->next;
+            else prev->next = temp->next;
+            delete temp;
             found = true;
+            break;
         }
-        else {
-            ++it;
-        }
+        prev = temp;
+        temp = temp->next;
     }
 
     if (found) {
@@ -78,29 +103,11 @@ void deleteEvent() {
 }
 
 void listEvents() {
-    for (const auto& event : events) {
-        std::cout << event.date << " - " << event.name;
-        if (!event.description.empty()) {
-            std::cout << " - " << event.description;
-        }
+    Event* temp = head;
+    while (temp) {
+        std::cout << temp->date << " - " << temp->name;
+        if (!temp->description.empty()) std::cout << " - " << temp->description;
         std::cout << "\n";
+        temp = temp->next;
     }
-}
-
-void saveEvents() {
-    std::ofstream file(filename);
-    if (!file) {
-        std::cerr << "Error: Could not open file for writing.\n";
-        return;
-    }
-
-    for (const auto& event : events) {
-        file << event.date << " - " << event.name;
-        if (!event.description.empty()) {
-            file << " - " << event.description;
-        }
-        file << "\n";
-    }
-
-    file.close();
 }
