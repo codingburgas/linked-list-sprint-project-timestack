@@ -1,16 +1,13 @@
 #pragma once
 
-
 #include <iostream>
-#include <iomanip>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <list>
-#include <sstream>
 #include <algorithm>
 
+#include "../stLib//EventData.h"
 #include "../stLib/DatabaseManager.h"
+#include "EventManager.h"
 #include "Menu.h"
-#include "addEvent.h"
-#include "listEvent.h"
-#include "../stLib/events.h"

@@ -67,15 +67,7 @@ void showMenu()
     std::cout << "        \\|__|  \\|__|\\|__|     \\|__|\\|_______|\\_________\\   \\|__|  \\|__|\\|__|\\|_______|\\|__| \\|__| " << std::endl;
     std::cout << "                                             \\|_________|                                         " << std::endl;
 
-	for (int i = 0; i < 100; i++)
-	{
-		std::cout << "_";
-	}
-
-	for (int i = 0; i < 3; i++)
-	{
-		std::cout << std::endl;
-	}
+	std::cout << std::string(100, '_') << "\n\n\n";
 	
 
 	std::cout << "Choose option." << std::endl;

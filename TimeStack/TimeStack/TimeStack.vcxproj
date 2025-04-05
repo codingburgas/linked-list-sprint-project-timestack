@@ -132,14 +132,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="addEvent.cpp" />
-    <ClCompile Include="listEvents.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="addEvent.h" />
-    <ClInclude Include="listEvent.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="precompiler.h" />
   </ItemGroup>

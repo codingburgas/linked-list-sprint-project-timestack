@@ -1,33 +1,28 @@
-#include "../TimeStack/precompiler.h"
-
-bool gameOn = true;
+#include "EventData.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 void loadEvents() {
     std::ifstream file(filename);
     if (!file) {
-        std::ofstream createFile(filename); // Create the file if it doesn't exist
+        std::ofstream createFile(filename);
         createFile.close();
         return;
     }
 
-    events.clear();  // Clear the list to prevent duplicates
+    events.clear();
 
     int day, month, year;
-    std::string name, description;
+    std::string name, description, tempLine;
 
-    std::string tempLine;
     while (std::getline(file, tempLine)) {
         std::istringstream lineStream(tempLine);
-        lineStream >> day >> month >> year; // Read date as separate values
-
-        lineStream.ignore(); // Ignore the first '-'
-
-        std::getline(lineStream, name, '-'); // Read name until the first '-'
-
-        // Read the rest as description (if it exists)
+        lineStream >> day >> month >> year;
+        lineStream.ignore();  // Ignore space
+        std::getline(lineStream, name, '-');
         std::getline(lineStream, description);
 
-        // Trim spaces
         name = name.substr(name.find_first_not_of(" "));
         description = description.substr(description.find_first_not_of(" "));
 
