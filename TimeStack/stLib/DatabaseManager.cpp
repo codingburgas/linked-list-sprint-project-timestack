@@ -1,5 +1,4 @@
 #include "../TimeStack/precompiler.h"
-#include "../TimeStack/EventManager.cpp"
 
 void loadEvents() {
     std::ifstream file(filename);

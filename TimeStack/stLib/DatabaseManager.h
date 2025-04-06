@@ -1,5 +1,4 @@
 #pragma once
 
-extern bool gameOn;
-
 void loadEvents();
+std::string trim(const std::string& str);

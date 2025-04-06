@@ -5,7 +5,6 @@ void startWindow()
 
 	int screen;
 
-	void loadEvents();
 	showMenu();
 
 	std::cin >> screen;
