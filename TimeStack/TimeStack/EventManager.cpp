@@ -81,6 +81,11 @@ void addEvent() {
 
     // Save to file
     saveEvents();
+
+    std::cout << "\nEvent added successfully!";
+    std::cout << "\nPress Enter to return to menu...";
+    std::cin.get(); // only one enter needed now
+    system("cls");
 }
 
 void editEvent() {
@@ -248,12 +253,15 @@ void deleteEvent() {
 
     if (found) {
         std::cout << "Event deleted successfully.\n";
-        // Now delete from the linked list as well
         deleteFromList(targetDate, eventName);
     }
     else {
         std::cout << "Event not found.\n";
     }
+
+    std::cout << "\nPress Enter to return to menu...";
+    std::cin.get();
+    system("cls");
 }
 
 void deleteFromList(const std::string& date, const std::string& name) {
@@ -279,9 +287,14 @@ void deleteFromList(const std::string& date, const std::string& name) {
 
 
 void listEvents() {
+    system("cls");
+
     std::ifstream infile(filename);
     if (!infile) {
         std::cerr << "Error: Could not open file.\n";
+        std::cout << "\nPress Enter to return to menu...";
+        std::cin.ignore();
+        std::cin.get();
         return;
     }
 
@@ -302,4 +315,10 @@ void listEvents() {
         }
         std::cout << "\n";
     }
+
+    std::cout << "\nPress Enter to return to menu...";
+    std::cin.ignore();
+    std::cin.get();
+    system("cls");
 }
+
