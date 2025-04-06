@@ -25,7 +25,7 @@ void startWindow()
 		case 2:
 
 			system("cls");
-			//editEvent();
+			editEvent();
 
 			break;
 

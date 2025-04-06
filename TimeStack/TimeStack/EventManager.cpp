@@ -83,6 +83,114 @@ void addEvent() {
     saveEvents();
 }
 
+void editEvent() {
+    std::string day, month, year, eventName;
+    std::cout << "Enter date of event to edit (DD MM YYYY): ";
+    std::cin >> day >> month >> year;
+    std::cin.ignore();  // clear newline
+
+    std::cout << "Enter the name of the event: ";
+    std::getline(std::cin, eventName);
+
+    std::string targetDate = trim(day) + " " + trim(month) + " " + trim(year);
+    eventName = trim(eventName);
+
+    std::ifstream infile(filename);
+    if (!infile) {
+        std::cerr << "Could not open file for reading.\n";
+        return;
+    }
+
+    std::ofstream tempFile("temp.txt");
+    if (!tempFile) {
+        std::cerr << "Could not open temp file for writing.\n";
+        return;
+    }
+
+    std::string line;
+    bool found = false;
+    while (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        int d, m, y;
+        std::string name, desc;
+        char dash;
+
+        iss >> d >> m >> y >> dash;
+        std::getline(iss, name, '-');
+        std::getline(iss, desc);
+
+        std::string fileDate = std::to_string(d) + " " + std::to_string(m) + " " + std::to_string(y);
+        name = trim(name);
+        desc = trim(desc);
+
+        if (fileDate == targetDate && name == eventName) {
+            found = true;
+
+            std::cout << "\nEvent found!\n";
+            std::cout << "1. Edit date\n";
+            std::cout << "2. Edit name\n";
+            std::cout << "3. Edit description\n";
+            std::cout << "4. Cancel\n";
+            std::cout << "Choose what to edit: ";
+
+            int choice;
+            std::cin >> choice;
+            std::cin.ignore();
+
+            switch (choice) {
+            case 1: {
+                int newDay, newMonth, newYear;
+                std::cout << "Enter new date (DD MM YYYY): ";
+                std::cin >> newDay >> newMonth >> newYear;
+                fileDate = std::to_string(newDay) + " " + std::to_string(newMonth) + " " + std::to_string(newYear);
+                std::cin.ignore();
+                break;
+            }
+            case 2: {
+                std::cout << "Enter new name: ";
+                std::getline(std::cin, name);
+                break;
+            }
+            case 3: {
+                std::cout << "Enter new description: ";
+                std::getline(std::cin, desc);
+                break;
+            }
+            case 4:
+                std::cout << "Edit cancelled.\n";
+                tempFile << line << "\n";
+                continue;
+            default:
+                std::cout << "Invalid option.\n";
+                tempFile << line << "\n";
+                continue;
+            }
+
+            tempFile << fileDate << " - " << trim(name);
+            if (!desc.empty()) tempFile << " - " << trim(desc);
+            tempFile << "\n";
+
+        }
+        else {
+            tempFile << line << "\n";
+        }
+    }
+
+    infile.close();
+    tempFile.close();
+
+    if (found) {
+        std::remove(filename.c_str());
+        std::rename("temp.txt", filename.c_str());
+        std::cout << "Event updated successfully.\n";
+        system("cls");
+    }
+    else {
+        std::remove("temp.txt");  // clean up
+        std::cout << "Event not found.\n";
+    }
+}
+
 
 void deleteEvent() {
     std::string day, month, year, eventName;
