@@ -3,7 +3,10 @@
 
 void loadEvents() {
     std::ifstream file(filename);
-    if (!file) return;
+    if (!file) {
+        std::cerr << "Could not open file for reading.\n";
+        return;
+    }
 
     std::string line;
     while (std::getline(file, line)) {
@@ -18,15 +21,17 @@ void loadEvents() {
 
         Event* newEvent = new Event;
         newEvent->date = std::to_string(day) + " " + std::to_string(month) + " " + std::to_string(year);
-        newEvent->name = trim(name);
-        newEvent->description = trim(desc);
+        newEvent->name = name.empty() ? "Unnamed" : name;
+        newEvent->description = desc;
         newEvent->next = nullptr;
 
-        if (!head) head = newEvent;
+        if (!head)
+            head = newEvent;
         else {
             Event* temp = head;
             while (temp->next) temp = temp->next;
             temp->next = newEvent;
         }
     }
+    file.close();
 }
