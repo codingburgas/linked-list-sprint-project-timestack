@@ -9,7 +9,7 @@ void startWindow()
 
     std::cin >> screen;
 
-    if (screen <= 9 && screen > 0)
+    if (screen <= 10 && screen > 0)
     {
         switch (screen)
         {
@@ -46,6 +46,10 @@ void startWindow()
             viewEventDetails();
             break;
         case 9:
+            system("cls");
+            exportEvents();
+            break;
+        case 10:
             system("cls");
             gameOn = false;
             break;
@@ -84,5 +88,6 @@ void showMenu()
     std::cout << "6. Create test for an event" << std::endl;
     std::cout << "7. Search events" << std::endl;
     std::cout << "8. View event details" << std::endl;
-    std::cout << "9. Exit" << std::endl;
+    std::cout << "9. Export events" << std::endl;
+    std::cout << "10. Exit" << std::endl;
 }

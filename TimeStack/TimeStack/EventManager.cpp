@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 struct Question {
     std::string questionText;
     std::vector<std::string> options;
@@ -23,6 +24,23 @@ bool isValidDate(int day, int month, int year) {
     if (month < 1 || month > 12) return false;
     if (year > 2100) return false;
     return true;
+}
+void exportEvents() {
+    std::ofstream outFile("events_export.csv");
+    if (!outFile) {
+        std::cerr << "Error: Could not open file for writing.\n";
+        return;
+    }
+
+    outFile << "Date,Name,Description\n";
+    Event* temp = head;
+    while (temp) {
+        outFile << temp->date << "," << temp->name << "," << temp->description << "\n";
+        temp = temp->next;
+    }
+
+    outFile.close();
+    std::cout << "Events exported successfully to events_export.csv\n";
 }
 void createTestForEvent() {
     std::string eventName;
@@ -74,7 +92,7 @@ void viewEventDetails() {
     std::string day, month, year, eventName;
     std::cout << "Enter date of event to view details (DD MM YYYY): ";
     std::cin >> day >> month >> year;
-    std::cin.ignore();  // clear newline
+    std::cin.ignore();
 
     std::cout << "Enter the name of the event: ";
     std::getline(std::cin, eventName);
