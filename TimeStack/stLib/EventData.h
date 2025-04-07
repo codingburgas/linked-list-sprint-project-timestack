@@ -6,7 +6,7 @@ struct Event {
     std::string date;
     std::string name;
     std::string description;
-    Event* next;
+    Event* next = nullptr;
 };
 
 extern Event* head;
