@@ -24,17 +24,12 @@ void saveEvents() {
     }
 
     Event* temp = head;
-    while (temp != nullptr) {
-        std::istringstream dateStream(temp->date);
-        int day, month, year;
-        dateStream >> day >> month >> year;
-
-        file << day << " " << month << " " << year << " - " << temp->name;
+    while (temp) {
+        file << temp->date << " - " << temp->name;
         if (!temp->description.empty()) {
             file << " - " << temp->description;
         }
         file << "\n";
-
         temp = temp->next;
     }
 
@@ -284,17 +279,26 @@ void deleteFromList(const std::string& date, const std::string& name) {
     }
 }
 
+void sortEvents() {
+    int option;
+    std::cout << "Sort events by:\n";
+    std::cout << "1. Year\n";
+    std::cout << "2. Month\n";
+    std::cout << "3. Day\n";
+    std::cout << "4. Name (Alphabetically)\n";
+    std::cout << "Enter your choice: ";
+    std::cin >> option;
 
+    bubbleSort(option);
+    saveEvents();
+    std::cout << "Events sorted successfully.\n";
+    listEvents();
+}
 
 void listEvents() {
-    system("cls");
-
     std::ifstream infile(filename);
     if (!infile) {
         std::cerr << "Error: Could not open file.\n";
-        std::cout << "\nPress Enter to return to menu...";
-        std::cin.ignore();
-        std::cin.get();
         return;
     }
 
@@ -305,7 +309,12 @@ void listEvents() {
         std::string name, desc;
         char dash;
 
-        iss >> day >> month >> year >> dash;
+        // Ensure the line is in the correct format
+        if (!(iss >> day >> month >> year >> dash)) {
+            std::cerr << "Error: Invalid line format in file.\n";
+            continue;  // Skip invalid lines
+        }
+
         std::getline(iss, name, '-');
         std::getline(iss, desc);
 
@@ -315,10 +324,4 @@ void listEvents() {
         }
         std::cout << "\n";
     }
-
-    std::cout << "\nPress Enter to return to menu...";
-    std::cin.ignore();
-    std::cin.get();
-    system("cls");
 }
-

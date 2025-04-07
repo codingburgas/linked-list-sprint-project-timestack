@@ -21,12 +21,18 @@
     <ClCompile Include="EventData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SortManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EventData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

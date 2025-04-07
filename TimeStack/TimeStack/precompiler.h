@@ -8,5 +8,6 @@
 
 #include "../stLib//EventData.h"
 #include "../stLib/DatabaseManager.h"
+#include "../stLib/SortManager.h"
 #include "EventManager.h"
 #include "Menu.h"
