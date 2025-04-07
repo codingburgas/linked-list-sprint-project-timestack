@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 struct Question {
     std::string questionText;
     std::vector<std::string> options;
@@ -40,7 +41,7 @@ void createTestForEvent() {
         int numOptions;
         std::cout << "Enter the number of options: ";
         std::cin >> numOptions;
-        std::cin.ignore(); // Clear the newline character
+        std::cin.ignore();
 
         for (int i = 0; i < numOptions; ++i) {
             std::string option;
@@ -51,17 +52,15 @@ void createTestForEvent() {
 
         std::cout << "Enter the number of the correct option: ";
         std::cin >> q.correctOption;
-        std::cin.ignore(); // Clear the newline character
+        std::cin.ignore();
 
         questions.push_back(q);
 
         std::cout << "Do you want to add another question? (y/n): ";
         std::cin >> addMoreQuestions;
-        std::cin.ignore(); // Clear the newline character
+        std::cin.ignore();
 
     } while (addMoreQuestions == 'y' || addMoreQuestions == 'Y');
-
-    // Display the created test for the event
     std::cout << "\nTest for event '" << eventName << "':\n";
     for (size_t i = 0; i < questions.size(); ++i) {
         std::cout << "Q" << (i + 1) << ": " << questions[i].questionText << "\n";
@@ -91,7 +90,67 @@ void saveEvents() {
     file.close();
 }
 
+void searchEvents() {
+    int searchOption;
+    std::cout << "Search events by:\n";
+    std::cout << "1. Name\n";
+    std::cout << "2. Date\n";
+    std::cout << "Enter your choice: ";
+    std::cin >> searchOption;
+    std::cin.ignore();
 
+    if (searchOption == 1) {
+        std::string searchName;
+        std::cout << "Enter the name of the event: ";
+        std::getline(std::cin, searchName);
+        searchName = trim(searchName);
+
+        Event* temp = head;
+        bool found = false;
+        while (temp) {
+            if (temp->name.find(searchName) != std::string::npos) {
+                std::cout << temp->date << " - " << temp->name;
+                if (!temp->description.empty()) {
+                    std::cout << " - " << temp->description;
+                }
+                std::cout << "\n";
+                found = true;
+            }
+            temp = temp->next;
+        }
+        if (!found) {
+            std::cout << "No events found with the name '" << searchName << "'.\n";
+        }
+    }
+    else if (searchOption == 2) {
+        std::string day, month, year;
+        std::cout << "Enter date of event to search (DD MM YYYY): ";
+        std::cin >> day >> month >> year;
+        std::cin.ignore();
+
+        std::string searchDate = trim(day) + " " + trim(month) + " " + trim(year);
+
+        Event* temp = head;
+        bool found = false;
+        while (temp) {
+            if (temp->date == searchDate) {
+                std::cout << temp->date << " - " << temp->name;
+                if (!temp->description.empty()) {
+                    std::cout << " - " << temp->description;
+                }
+                std::cout << "\n";
+                found = true;
+            }
+            temp = temp->next;
+        }
+        if (!found) {
+            std::cout << "No events found on the date '" << searchDate << "'.\n";
+        }
+    }
+    else {
+        std::cout << "Invalid search option.\n";
+    }
+}
 
 void addEvent() {
     Event* newEvent = new Event;
