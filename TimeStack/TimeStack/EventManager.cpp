@@ -70,6 +70,36 @@ void createTestForEvent() {
         std::cout << "Correct option: " << questions[i].correctOption << "\n";
     }
 }
+void viewEventDetails() {
+    std::string day, month, year, eventName;
+    std::cout << "Enter date of event to view details (DD MM YYYY): ";
+    std::cin >> day >> month >> year;
+    std::cin.ignore();  // clear newline
+
+    std::cout << "Enter the name of the event: ";
+    std::getline(std::cin, eventName);
+
+    std::string targetDate = trim(day) + " " + trim(month) + " " + trim(year);
+    eventName = trim(eventName);
+
+    Event* temp = head;
+    bool found = false;
+    while (temp) {
+        if (temp->date == targetDate && temp->name == eventName) {
+            std::cout << "Event Details:\n";
+            std::cout << "Date: " << temp->date << "\n";
+            std::cout << "Name: " << temp->name << "\n";
+            std::cout << "Description: " << temp->description << "\n";
+            found = true;
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (!found) {
+        std::cout << "Event not found.\n";
+    }
+}
 void saveEvents() {
     std::ofstream file(filename);
     if (!file) {
