@@ -25,8 +25,8 @@
 
 # <img src= "resources/word_logo.png" alt="document icon"> Documentation
 
-### <img src= "resources/word_logo.png" alt="word logo"> [Documentation](https://codingburgas-my.sharepoint.com/:w:/r/personal/ndzhelev22_codingburgas_bg/_layouts/15/Doc.aspx?sourcedoc=%7BCC0A48E4-3C32-4B0C-8247-59529782A205%7D&file=TimeStack_documentation.docx&action=default&mobileredirect=true)
-### <img src= "resources/powerpoint_logo.png" alt="powerpoint logo"> [Presentation](https://codingburgas-my.sharepoint.com/:p:/g/personal/tpzhekov22_codingburgas_bg/EWe4U4ZiMfVEtiA6gaSuwBkBwcewCGP52OkZa6guijc0Tg?e=rih6CA)
+### <img src= "resources/word_logo.png" alt="word logo"> [Documentation](https://codingburgas-my.sharepoint.com/:w:/g/personal/ndzhelev22_codingburgas_bg/EeRICswyPAxLgkdZUpeCogUByUfcO1yiwoEr6IdpEKh2LA?e=i4mt8Q)
+### <img src= "resources/powerpoint_logo.png" alt="powerpoint logo"> [Presentation](https://codingburgas-my.sharepoint.com/:p:/g/personal/ndzhelev22_codingburgas_bg/EWQEaS3YgBFGk41g_W00wg0B_ZkQu_9vPyySDPWAwne02A?e=7CBThr)
 
 # <img src= "resources/laptop_icon.png" alt="laptop icon"> Used Technologies
 
