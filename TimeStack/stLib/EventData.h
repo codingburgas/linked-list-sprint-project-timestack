@@ -10,4 +10,4 @@ struct Event {
 };
 
 extern Event* head;
-const std::string filename = "entries.txt";
+const std::string filename = "database/entries.txt";

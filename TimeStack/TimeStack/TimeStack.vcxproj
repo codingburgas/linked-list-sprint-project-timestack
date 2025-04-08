@@ -107,6 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\stLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,16 +133,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="UserTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="EventManager.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="precompiler.h" />
-    <ClInclude Include="UserTest.h" />
+    <ClCompile Include="SourceFiles\EventManager.cpp" />
+    <ClCompile Include="SourceFiles\Menu.cpp" />
+    <ClCompile Include="SourceFiles\UserTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\stLib\stLib.vcxproj">
@@ -149,7 +144,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="entries.txt" />
+    <ClInclude Include="HeaderFiles\EventManager.h" />
+    <ClInclude Include="HeaderFiles\Menu.h" />
+    <ClInclude Include="HeaderFiles\precompiler.h" />
+    <ClInclude Include="HeaderFiles\UserTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

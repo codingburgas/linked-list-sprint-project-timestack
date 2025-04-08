@@ -1,4 +1,4 @@
-#include "../TimeStack/precompiler.h"
+#include "../TimeStack/HeaderFiles/precompiler.h"
 
 void bubbleSort(int sortBy) {
     if (head == nullptr || head->next == nullptr) return;
@@ -51,16 +51,6 @@ void bubbleSort(int sortBy) {
 }
 
 void sortEvents() {
-    loadEvents();  // Always load events before sorting
-
-    if (head == nullptr || head->next == nullptr) {
-        std::cout << "No events found to sort.\n";
-        std::cout << "\nPress Enter to return to the menu...";
-        std::cin.ignore();
-        std::cin.get();
-        system("cls");
-        return;
-    }
 
     int option;
     std::cout << "Sort events by:\n";

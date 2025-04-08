@@ -1,4 +1,4 @@
-#include "precompiler.h"
+#include "../HeaderFiles/precompiler.h"
 
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(' ');
@@ -15,7 +15,7 @@ bool isValidDate(int day, int month, int year) {
 }
 
 void exportEvents() {
-    std::ofstream outFile("events_export.csv");
+    std::ofstream outFile("database/events_export.csv");
     if (!outFile) {
         std::cout << "Error: Could not open file for writing.\n";
         std::cout << "\nPress Enter to return to the menu...";

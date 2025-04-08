@@ -1,4 +1,4 @@
-#include "precompiler.h"
+#include "../HeaderFiles/precompiler.h"
 
 void createTestForEvent() {
     std::string eventName;
@@ -55,8 +55,12 @@ void createTestForEvent() {
         std::cin.ignore(); // Clear newline
     } while (addMoreQuestions == 'y' || addMoreQuestions == 'Y');
 
-    // Save to file
-    std::ofstream file(eventName + "test.txt");
+    // Ensure 'database/' directory exists
+    _mkdir("database");
+
+    // Save to file inside the database folder
+    std::string filePath = "database/" + eventName + "test.txt";
+    std::ofstream file(filePath);
     if (!file) {
         std::cout << "Failed to save the test.\n";
         std::cout << "\nPress Enter to return to the menu...";
@@ -91,7 +95,7 @@ void createTestForEvent() {
     }
 
     file.close();
-    std::cout << "Test saved to '" << eventName + "test.txt'!\n";
+    std::cout << "Test saved to '" << filePath << "'!\n";
     std::cout << "\nPress Enter to return to the menu...";
     std::cin.ignore();
     std::cin.get();
@@ -103,7 +107,7 @@ void takeTest() {
     std::cout << "Enter the name of the test file to take (e.g. 'eventname_test.txt'): ";
     std::cin >> testFileName;
 
-    std::ifstream file(testFileName);
+    std::ifstream file("database/" + testFileName);
     if (!file) {
         std::cout << "Could not open test file: " << testFileName << "\n";
         std::cout << "\nPress Enter to return to the menu...";
