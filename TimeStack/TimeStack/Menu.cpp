@@ -1,5 +1,4 @@
 ﻿#include "precompiler.h"
-#include "EventManager.h"
 
 void startWindow()
 {

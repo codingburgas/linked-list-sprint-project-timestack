@@ -179,8 +179,13 @@ void addEvent() {
         temp->next = newEvent;
     }
 
-    // Save to file
-    saveEvents();
+    std::ofstream file(filename, std::ios::app);
+    file << newEvent->date << " - " << newEvent->name;
+    if (!newEvent->description.empty()) {
+        file << " - " << newEvent->description;
+    }
+    file << "\n";
+    file.close();
 
     std::cout << "\nEvent added successfully!";
     std::cout << "\nPress Enter to return to menu...";
