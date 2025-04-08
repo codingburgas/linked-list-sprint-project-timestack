@@ -1,6 +1,0 @@
-Q1: kak si
-2
-  Option 1: dobre
-  Option 2: zle
-1
-

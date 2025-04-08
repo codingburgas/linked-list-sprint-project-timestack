@@ -3,15 +3,16 @@
 void createTestForEvent() {
     std::string eventName;
     char addMoreQuestions;
-    QuestionNode* head = nullptr;
-    QuestionNode* tail = nullptr;
+    QuestionNode* head = nullptr;  // Start of the linked list of questions
+    QuestionNode* tail = nullptr;  // Points to the last node to ease appending
 
     std::cout << "Enter the name of the event: ";
-    std::cin.ignore(); // Clear the input buffer
+    std::cin.ignore(); // Clears leftover input from previous input operations
     std::getline(std::cin, eventName);
 
+    // Loop to allow the user to add multiple questions
     do {
-        QuestionNode* newQuestion = new QuestionNode;
+        QuestionNode* newQuestion = new QuestionNode; // Allocate memory for new question
         newQuestion->optionsHead = nullptr;
         newQuestion->next = nullptr;
 
@@ -21,16 +22,18 @@ void createTestForEvent() {
         int numOptions;
         std::cout << "Enter the number of options: ";
         std::cin >> numOptions;
-        std::cin.ignore(); // Clear newline
+        std::cin.ignore(); // Ignore the newline left in the input buffer
 
-        OptionNode* optionTail = nullptr;
+        OptionNode* optionTail = nullptr; // Pointer to build the linked list of options
 
+        // Collect each option from the user
         for (int i = 0; i < numOptions; ++i) {
-            OptionNode* newOption = new OptionNode;
+            OptionNode* newOption = new OptionNode; // Dynamically allocate option node
             std::cout << "Enter option " << (i + 1) << ": ";
             std::getline(std::cin, newOption->text);
             newOption->next = nullptr;
 
+            // Link option node into the options list
             if (!newQuestion->optionsHead)
                 newQuestion->optionsHead = newOption;
             else
@@ -41,8 +44,9 @@ void createTestForEvent() {
 
         std::cout << "Enter the number of the correct option: ";
         std::cin >> newQuestion->correctOption;
-        std::cin.ignore(); // Clear newline
+        std::cin.ignore(); // Clear input buffer after numeric input
 
+        // Add the new question to the linked list
         if (!head)
             head = newQuestion;
         else
@@ -52,13 +56,13 @@ void createTestForEvent() {
 
         std::cout << "Do you want to add another question? (y/n): ";
         std::cin >> addMoreQuestions;
-        std::cin.ignore(); // Clear newline
+        std::cin.ignore();
     } while (addMoreQuestions == 'y' || addMoreQuestions == 'Y');
 
-    // Ensure 'database/' directory exists
+    // Ensure the output directory exists before saving the file
     _mkdir("database");
 
-    // Save to file inside the database folder
+    // Create the file path and open file for writing test data
     std::string filePath = "database/" + eventName + "test.txt";
     std::ofstream file(filePath);
     if (!file) {
@@ -70,11 +74,13 @@ void createTestForEvent() {
         return;
     }
 
+    // Write all questions and their options to the file in a formatted way
     QuestionNode* q = head;
     int qIndex = 1;
     while (q) {
         file << "Q" << qIndex++ << ": " << q->questionText << "\n";
 
+        // Count and write the number of options
         int optionCount = 0;
         OptionNode* oCount = q->optionsHead;
         while (oCount) {
@@ -83,6 +89,7 @@ void createTestForEvent() {
         }
         file << optionCount << "\n";
 
+        // Write each option to the file
         OptionNode* o = q->optionsHead;
         int optIndex = 1;
         while (o) {
@@ -90,11 +97,11 @@ void createTestForEvent() {
             o = o->next;
         }
 
-        file << q->correctOption << "\n\n";
+        file << q->correctOption << "\n\n"; // Write the correct answer
         q = q->next;
     }
 
-    file.close();
+    file.close(); // Finalize file writing
     std::cout << "Test saved to '" << filePath << "'!\n";
     std::cout << "\nPress Enter to return to the menu...";
     std::cin.ignore();
@@ -117,28 +124,32 @@ void takeTest() {
         return;
     }
 
-    QuestionNode* qHead = nullptr;
-    QuestionNode* qTail = nullptr;
+    QuestionNode* qHead = nullptr; // Head of the loaded questions
+    QuestionNode* qTail = nullptr; // Tail to append new questions
     std::string line;
 
+    // Parse the test file and load questions into memory
     while (std::getline(file, line)) {
-        if (line.empty()) continue;
+        if (line.empty()) continue; // Skip empty lines
 
         QuestionNode* newNode = new QuestionNode;
         newNode->optionsHead = nullptr;
         newNode->next = nullptr;
 
+        // Extract the question text after "Qn: "
         newNode->questionText = line.substr(line.find(":") + 2);
 
         int optionCount;
-        file >> optionCount;
+        file >> optionCount; // Read how many options to expect
         file.ignore();
 
         OptionNode* optionTail = nullptr;
+
+        // Load each option and link it
         for (int i = 0; i < optionCount; ++i) {
             std::getline(file, line);
             OptionNode* newOption = new OptionNode;
-            newOption->text = line.substr(line.find(":") + 2);
+            newOption->text = line.substr(line.find(":") + 2); // Extract actual option text
             newOption->next = nullptr;
 
             if (!newNode->optionsHead)
@@ -149,9 +160,11 @@ void takeTest() {
             optionTail = newOption;
         }
 
+        // Load the correct option number for this question
         file >> newNode->correctOption;
         file.ignore();
 
+        // Add the question node to the linked list
         if (!qHead)
             qHead = qTail = newNode;
         else {
@@ -159,7 +172,7 @@ void takeTest() {
             qTail = newNode;
         }
 
-        std::getline(file, line); // Consume possible empty line
+        std::getline(file, line); // Eat up any extra empty line
     }
 
     file.close();
@@ -167,6 +180,7 @@ void takeTest() {
     std::cout << "\nTake the Test!\n";
     int score = 0, total = 0;
 
+    // Iterate over questions and present them to the user
     QuestionNode* current = qHead;
     while (current) {
         std::cout << "\n" << current->questionText << "\n";
@@ -181,6 +195,7 @@ void takeTest() {
         std::cout << "Your answer: ";
         std::cin >> userAnswer;
 
+        // Evaluate user's answer and update score
         if (userAnswer == current->correctOption) {
             std::cout << "Correct!\n";
             score++;
@@ -193,12 +208,14 @@ void takeTest() {
         current = current->next;
     }
 
+    // Show final score to the user
     std::cout << "\nTest complete! Your score: " << score << " / " << total << "\n";
     std::cout << "\nPress Enter to return to the menu...";
     std::cin.ignore();
     std::cin.get();
     system("cls");
 
+    // Cleanup: Deallocate all dynamically created memory for questions and options
     while (qHead) {
         QuestionNode* temp = qHead;
         qHead = qHead->next;
