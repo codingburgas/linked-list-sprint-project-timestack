@@ -6,19 +6,27 @@ void loadEvents() {
 
     std::string line;
     while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        int day, month, year;
-        char dash;
-        iss >> day >> month >> year >> dash;
+        std::stringstream ss(line);
+        std::string datePart, name, description;
 
-        std::string name, desc;
-        std::getline(iss, name, '-');
-        std::getline(iss, desc);
+        std::getline(ss, datePart, '-');
+        std::getline(ss, name, '-');
+        std::getline(ss, description);
+
+        // Trim whitespace
+        auto trim = [](std::string& str) {
+            str.erase(0, str.find_first_not_of(" \t"));
+            str.erase(str.find_last_not_of(" \t") + 1);
+            };
+
+        trim(datePart);
+        trim(name);
+        trim(description);
 
         Event* newEvent = new Event;
-        newEvent->date = std::to_string(day) + " " + std::to_string(month) + " " + std::to_string(year);
+        newEvent->date = datePart;
         newEvent->name = name;
-        newEvent->description = desc;
+        newEvent->description = description;
         newEvent->next = nullptr;
 
         if (!head) head = newEvent;
@@ -29,5 +37,3 @@ void loadEvents() {
         }
     }
 }
-
-

@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <iomanip>
 
 #include "../stLib//EventData.h"
 #include "../stLib/DatabaseManager.h"

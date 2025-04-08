@@ -13,10 +13,15 @@ bool isValidDate(int day, int month, int year) {
     if (year > 2100) return false;
     return true;
 }
+
 void exportEvents() {
     std::ofstream outFile("events_export.csv");
     if (!outFile) {
-        std::cerr << "Error: Could not open file for writing.\n";
+        std::cout << "Error: Could not open file for writing.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.ignore();
+        std::cin.get();
+        system("cls");
         return;
     }
 
@@ -28,12 +33,39 @@ void exportEvents() {
     }
 
     outFile.close();
+
     std::cout << "Events exported successfully to events_export.csv\n";
+    std::cout << "\nPress Enter to return to the menu...";
+    std::cin.ignore();  // Clear the newline left from menu input
+    std::cin.get();     // Actually wait for Enter
+    system("cls");
 }
 
-void viewEventDetails() {
+
+
+void saveEvents() {
+    std::ofstream file(filename);
+    if (!file) {
+        std::cout << "Failed to open file for saving.\n";
+        return;
+    }
+
+    Event* current = head;
+    while (current) {
+        file << current->date << " - " << current->name;
+        if (!current->description.empty()) {
+            file << " - " << current->description;
+        }
+        file << "\n";
+        current = current->next;
+    }
+
+    file.close();
+}
+
+void searchEvents() {
     std::string day, month, year, eventName;
-    std::cout << "Enter date of event to view details (DD MM YYYY): ";
+    std::cout << "Enter date of the event to search (DD MM YYYY): ";
     std::cin >> day >> month >> year;
     std::cin.ignore();
 
@@ -43,104 +75,52 @@ void viewEventDetails() {
     std::string targetDate = trim(day) + " " + trim(month) + " " + trim(year);
     eventName = trim(eventName);
 
-    Event* temp = head;
-    bool found = false;
-    while (temp) {
-        if (temp->date == targetDate && temp->name == eventName) {
-            std::cout << "Event Details:\n";
-            std::cout << "Date: " << temp->date << "\n";
-            std::cout << "Name: " << temp->name << "\n";
-            std::cout << "Description: " << temp->description << "\n";
-            found = true;
-            break;
-        }
-        temp = temp->next;
-    }
-
-    if (!found) {
-        std::cout << "Event not found.\n";
-    }
-}
-void saveEvents() {
-    std::ofstream file(filename);
-    if (!file) {
-        std::cerr << "Error: Could not open file for writing.\n";
+    std::ifstream infile(filename);
+    if (!infile) {
+        std::cout << "Could not open file for reading.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.get();
+        system("cls");
         return;
     }
 
-    Event* temp = head;
-    while (temp) {
-        file << temp->date << " - " << temp->name;
-        if (!temp->description.empty()) {
-            file << " - " << temp->description;
-        }
-        file << "\n";
-        temp = temp->next;
-    }
+    std::string line;
+    bool found = false;
+    while (std::getline(infile, line)) {
+        std::istringstream iss(line);
+        int d, m, y;
+        std::string name, desc;
+        char dash;
 
-    file.close();
-}
+        iss >> d >> m >> y >> dash;
+        std::getline(iss, name, '-');
+        std::getline(iss, desc);
 
-void searchEvents() {
-    int searchOption;
-    std::cout << "Search events by:\n";
-    std::cout << "1. Name\n";
-    std::cout << "2. Date\n";
-    std::cout << "Enter your choice: ";
-    std::cin >> searchOption;
-    std::cin.ignore();
+        std::string fileDate = std::to_string(d) + " " + std::to_string(m) + " " + std::to_string(y);
+        name = trim(name);
+        desc = trim(desc);
 
-    if (searchOption == 1) {
-        std::string searchName;
-        std::cout << "Enter the name of the event: ";
-        std::getline(std::cin, searchName);
-        searchName = trim(searchName);
-
-        Event* temp = head;
-        bool found = false;
-        while (temp) {
-            if (temp->name.find(searchName) != std::string::npos) {
-                std::cout << temp->date << " - " << temp->name;
-                if (!temp->description.empty()) {
-                    std::cout << " - " << temp->description;
-                }
-                std::cout << "\n";
-                found = true;
+        if (fileDate == targetDate && name == eventName) {
+            std::cout << "\nEvent found:\n";
+            std::cout << fileDate << " - " << name;
+            if (!desc.empty()) {
+                std::cout << " - " << desc;
             }
-            temp = temp->next;
-        }
-        if (!found) {
-            std::cout << "No events found with the name '" << searchName << "'.\n";
+            std::cout << "\n";
+            found = true;
+            break;
         }
     }
-    else if (searchOption == 2) {
-        std::string day, month, year;
-        std::cout << "Enter date of event to search (DD MM YYYY): ";
-        std::cin >> day >> month >> year;
-        std::cin.ignore();
 
-        std::string searchDate = trim(day) + " " + trim(month) + " " + trim(year);
+    infile.close();
 
-        Event* temp = head;
-        bool found = false;
-        while (temp) {
-            if (temp->date == searchDate) {
-                std::cout << temp->date << " - " << temp->name;
-                if (!temp->description.empty()) {
-                    std::cout << " - " << temp->description;
-                }
-                std::cout << "\n";
-                found = true;
-            }
-            temp = temp->next;
-        }
-        if (!found) {
-            std::cout << "No events found on the date '" << searchDate << "'.\n";
-        }
+    if (!found) {
+        std::cout << "No event found with the given name and date.\n";
     }
-    else {
-        std::cout << "Invalid search option.\n";
-    }
+
+    std::cout << "\nPress Enter to return to the menu...";
+    std::cin.get();
+    system("cls");
 }
 
 void addEvent() {
@@ -159,14 +139,13 @@ void addEvent() {
         }
     } while (!isValidDate(day, month, year));
 
-    std::cin.ignore();  // Clear buffer before reading text
+    std::cin.ignore();
     std::cout << "Enter event name: ";
     std::getline(std::cin, newEvent->name);
 
     std::cout << "Enter event description: ";
     std::getline(std::cin, newEvent->description);
 
-    // Add to linked list
     newEvent->next = nullptr;
     if (!head) {
         head = newEvent;
@@ -189,7 +168,7 @@ void addEvent() {
 
     std::cout << "\nEvent added successfully!";
     std::cout << "\nPress Enter to return to menu...";
-    std::cin.get(); // only one enter needed now
+    std::cin.get();
     system("cls");
 }
 
@@ -197,7 +176,7 @@ void editEvent() {
     std::string day, month, year, eventName;
     std::cout << "Enter date of event to edit (DD MM YYYY): ";
     std::cin >> day >> month >> year;
-    std::cin.ignore();  // clear newline
+    std::cin.ignore();
 
     std::cout << "Enter the name of the event: ";
     std::getline(std::cin, eventName);
@@ -207,13 +186,19 @@ void editEvent() {
 
     std::ifstream infile(filename);
     if (!infile) {
-        std::cerr << "Could not open file for reading.\n";
+        std::cout << "Could not open file for reading.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.get();
+        system("cls");
         return;
     }
 
     std::ofstream tempFile("temp.txt");
     if (!tempFile) {
-        std::cerr << "Could not open temp file for writing.\n";
+        std::cout << "Could not open temp file for writing.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.get();
+        system("cls");
         return;
     }
 
@@ -293,20 +278,22 @@ void editEvent() {
         std::remove(filename.c_str());
         std::rename("temp.txt", filename.c_str());
         std::cout << "Event updated successfully.\n";
-        system("cls");
     }
     else {
-        std::remove("temp.txt");  // clean up
+        std::remove("temp.txt");
         std::cout << "Event not found.\n";
     }
-}
 
+    std::cout << "\nPress Enter to return to the menu...";
+    std::cin.get();
+    system("cls");
+}
 
 void deleteEvent() {
     std::string day, month, year, eventName;
     std::cout << "Enter date of event to delete (DD MM YYYY): ";
     std::cin >> day >> month >> year;
-    std::cin.ignore();  // clear leftover newline
+    std::cin.ignore();
 
     std::cout << "Enter the name of the event: ";
     std::getline(std::cin, eventName);
@@ -316,13 +303,19 @@ void deleteEvent() {
 
     std::ifstream infile(filename);
     if (!infile) {
-        std::cerr << "Could not open file for reading.\n";
+        std::cout << "Could not open file for reading.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.get();
+        system("cls");
         return;
     }
 
     std::ofstream tempFile("temp.txt");
     if (!tempFile) {
-        std::cerr << "Could not open temp file for writing.\n";
+        std::cout << "Could not open temp file for writing.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.get();
+        system("cls");
         return;
     }
 
@@ -343,16 +336,15 @@ void deleteEvent() {
 
         if (fileDate == targetDate && name == eventName) {
             found = true;
-            continue;  // Skip writing this line (delete it)
+            continue;
         }
 
-        tempFile << line << "\n";  // Write back all other lines
+        tempFile << line << "\n";
     }
 
     infile.close();
     tempFile.close();
 
-    // Replace original file with temp file
     std::remove(filename.c_str());
     std::rename("temp.txt", filename.c_str());
 
@@ -376,7 +368,7 @@ void deleteFromList(const std::string& date, const std::string& name) {
     while (temp != nullptr) {
         if (temp->date == date && temp->name == name) {
             if (prev == nullptr) {
-                head = temp->next;  // If the head is being deleted
+                head = temp->next;
             }
             else {
                 prev->next = temp->next;
@@ -389,40 +381,28 @@ void deleteFromList(const std::string& date, const std::string& name) {
     }
 }
 
-void sortEvents() {
-    int option;
-    std::cout << "Sort events by:\n";
-    std::cout << "1. Year\n";
-    std::cout << "2. Month\n";
-    std::cout << "3. Day\n";
-    std::cout << "4. Name (Alphabetically)\n";
-    std::cout << "Enter your choice: ";
-    std::cin >> option;
-
-    bubbleSort(option);
-    saveEvents();
-    std::cout << "Events sorted successfully.\n";
-    listEvents();
-}
-
 void listEvents() {
     std::ifstream infile(filename);
     if (!infile) {
-        std::cerr << "Error: Could not open file.\n";
+        std::cout << "Error: Could not open file.\n";
+        std::cout << "\nPress Enter to return to menu...";
+        std::cin.get();
+        system("cls");
         return;
     }
 
     std::string line;
+    bool found = false;
+
     while (std::getline(infile, line)) {
         std::istringstream iss(line);
         int day, month, year;
         std::string name, desc;
         char dash;
 
-        // Ensure the line is in the correct format
         if (!(iss >> day >> month >> year >> dash)) {
-            std::cerr << "Error: Invalid line format in file.\n";
-            continue;  // Skip invalid lines
+            std::cout << "Error: Invalid line format in file.\n";
+            continue;
         }
 
         std::getline(iss, name, '-');
@@ -433,5 +413,15 @@ void listEvents() {
             std::cout << " - " << desc;
         }
         std::cout << "\n";
+        found = true;
     }
+
+    if (!found) {
+        std::cout << "No events found.\n";
+    }
+
+    std::cout << "\nPress Enter to return to the menu...";
+    std::cin.ignore();
+    std::cin.get();
+    system("cls");
 }

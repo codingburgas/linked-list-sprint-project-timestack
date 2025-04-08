@@ -8,7 +8,7 @@ void startWindow()
 
     std::cin >> screen;
 
-    if (screen <= 10 && screen > 0)
+    if (screen <= 11 && screen > 0)
     {
         switch (screen)
         {
@@ -42,17 +42,13 @@ void startWindow()
             break;
         case 8:
             system("cls");
-            viewEventDetails();
+            exportEvents();
             break;
         case 9:
             system("cls");
-            exportEvents();
-            break;
-        case 10:
-            system("cls");
             takeTest();
             break;
-        case 11:
+        case 10:
             system("cls");
             gameOn = false;
             break;
@@ -119,7 +115,7 @@ void showMenu()
     const char* menu[] = {
         "[1]  Add an event",        "[2]  Edit an event",        "[3]  Delete an event",
         "[4]  List all events",     "[5]  Sort events",          "[6]  Create test for event",
-        "[7]  Search events",       "[8]  View event details",   "[9]  Export events",
+        "[7]  Search events",       "[8]  Export events",        "[9] Take test",
         "[10] Exit"
     };
 

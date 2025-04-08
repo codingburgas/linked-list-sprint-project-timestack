@@ -58,7 +58,11 @@ void createTestForEvent() {
     // Save to file
     std::ofstream file(eventName + "test.txt");
     if (!file) {
-        std::cerr << "Failed to save the test.\n";
+        std::cout << "Failed to save the test.\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.ignore();
+        std::cin.get();
+        system("cls");
         return;
     }
 
@@ -67,7 +71,6 @@ void createTestForEvent() {
     while (q) {
         file << "Q" << qIndex++ << ": " << q->questionText << "\n";
 
-        // Count and write number of options
         int optionCount = 0;
         OptionNode* oCount = q->optionsHead;
         while (oCount) {
@@ -76,7 +79,6 @@ void createTestForEvent() {
         }
         file << optionCount << "\n";
 
-        // Write options
         OptionNode* o = q->optionsHead;
         int optIndex = 1;
         while (o) {
@@ -90,6 +92,10 @@ void createTestForEvent() {
 
     file.close();
     std::cout << "Test saved to '" << eventName + "test.txt'!\n";
+    std::cout << "\nPress Enter to return to the menu...";
+    std::cin.ignore();
+    std::cin.get();
+    system("cls");
 }
 
 void takeTest() {
@@ -99,7 +105,11 @@ void takeTest() {
 
     std::ifstream file(testFileName);
     if (!file) {
-        std::cerr << "Could not open test file: " << testFileName << "\n";
+        std::cout << "Could not open test file: " << testFileName << "\n";
+        std::cout << "\nPress Enter to return to the menu...";
+        std::cin.ignore();
+        std::cin.get();
+        system("cls");
         return;
     }
 
@@ -118,7 +128,7 @@ void takeTest() {
 
         int optionCount;
         file >> optionCount;
-        file.ignore();  // ignore newline
+        file.ignore();
 
         OptionNode* optionTail = nullptr;
         for (int i = 0; i < optionCount; ++i) {
@@ -136,7 +146,7 @@ void takeTest() {
         }
 
         file >> newNode->correctOption;
-        file.ignore(); // skip newline
+        file.ignore();
 
         if (!qHead)
             qHead = qTail = newNode;
@@ -180,8 +190,11 @@ void takeTest() {
     }
 
     std::cout << "\nTest complete! Your score: " << score << " / " << total << "\n";
+    std::cout << "\nPress Enter to return to the menu...";
+    std::cin.ignore();
+    std::cin.get();
+    system("cls");
 
-    // Clean up memory
     while (qHead) {
         QuestionNode* temp = qHead;
         qHead = qHead->next;

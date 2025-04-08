@@ -1,3 +1,4 @@
-10 10 2010 - Test2 - testi
-9 9 2009 - Sigma - ohio
-8 8 2008 - Ohio - sigma
+12 12 2012 - Ohio - sigma
+12 12 2002 - Sigma1 - ohio
+10 10 2010 - Uan - Tomov
+5 5 2005 - Gei - geiche
