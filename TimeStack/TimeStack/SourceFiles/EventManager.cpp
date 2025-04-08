@@ -14,6 +14,42 @@ bool isValidDate(int day, int month, int year) {
     return true;
 }
 
+void addEventAtBeginning(Event* newEvent) {
+    newEvent->next = head;
+    head = newEvent;
+}
+
+void addEventSorted(Event* newEvent) {
+    if (!head || compareDates(newEvent->date, head->date) < 0) {
+        newEvent->next = head;
+        head = newEvent;
+        return;
+    }
+
+    Event* current = head;
+    while (current->next && compareDates(newEvent->date, current->next->date) >= 0) {
+        current = current->next;
+    }
+
+    newEvent->next = current->next;
+    current->next = newEvent;
+}
+
+
+int compareDates(const std::string& d1, const std::string& d2) {
+    std::stringstream ss1(d1), ss2(d2);
+    int day1, month1, year1;
+    int day2, month2, year2;
+
+    ss1 >> day1 >> month1 >> year1;
+    ss2 >> day2 >> month2 >> year2;
+
+    if (year1 != year2) return year1 - year2;
+    if (month1 != month2) return month1 - month2;
+    return day1 - day2;
+}
+
+
 void exportEvents() {
     std::ofstream outFile("database/events_export.csv");
     if (!outFile) {
@@ -147,19 +183,44 @@ void addEvent() {
     std::getline(std::cin, newEvent->description);
 
     newEvent->next = nullptr;
-    if (!head) {
-        head = newEvent;
-    }
-    else {
-        Event* temp = head;
-        while (temp->next) {
-            temp = temp->next;
+
+    int insertChoice;
+    std::cout << "\nWhere do you want to add the event?\n";
+    std::cout << "1. At the beginning\n";
+    std::cout << "2. At the end\n";
+    std::cout << "3. Sorted by date\n";
+    std::cout << "Enter choice (1-3): ";
+    std::cin >> insertChoice;
+
+    switch (insertChoice) {
+    case 1:
+        addEventAtBeginning(newEvent);
+        break;
+    case 2: {
+        if (!head) head = newEvent;
+        else {
+            Event* temp = head;
+            while (temp->next) temp = temp->next;
+            temp->next = newEvent;
         }
-        temp->next = newEvent;
+        break;
+    }
+    case 3:
+        addEventSorted(newEvent);
+        break;
+    default:
+        std::cout << "Invalid choice. Adding at end by default.\n";
+        if (!head) head = newEvent;
+        else {
+            Event* temp = head;
+            while (temp->next) temp = temp->next;
+            temp->next = newEvent;
+        }
     }
 
+    // Save to file
     std::ofstream file(filename, std::ios::app);
-    file << newEvent->date << " - " << newEvent->name;
+    file << day << " " << month << " " << year << " - " << newEvent->name;
     if (!newEvent->description.empty()) {
         file << " - " << newEvent->description;
     }
@@ -168,9 +229,11 @@ void addEvent() {
 
     std::cout << "\nEvent added successfully!";
     std::cout << "\nPress Enter to return to menu...";
+    std::cin.ignore();
     std::cin.get();
     system("cls");
 }
+
 
 void editEvent() {
     std::string day, month, year, eventName;

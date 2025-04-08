@@ -54,7 +54,6 @@ void bubbleSort(int sortBy) {
     } while (swapped);
 }
 
-
 void sortEvents() {
     loadEvents();  // <-- Make sure this is here
 
@@ -78,3 +77,4 @@ void sortEvents() {
     std::cin.get();
     system("cls");
 }
+
