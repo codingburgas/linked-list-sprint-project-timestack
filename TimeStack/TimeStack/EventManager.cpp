@@ -1,16 +1,4 @@
 #include "precompiler.h"
-#include "EventManager.h"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <fstream>
-struct Question {
-    std::string questionText;
-    std::vector<std::string> options;
-    int correctOption = -1;
-};
-Event* head = nullptr;
 
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(' ');
@@ -42,52 +30,7 @@ void exportEvents() {
     outFile.close();
     std::cout << "Events exported successfully to events_export.csv\n";
 }
-void createTestForEvent() {
-    std::string eventName;
-    std::vector<Question> questions;
-    char addMoreQuestions;
 
-    std::cout << "Enter the name of the event: ";
-    std::cin.ignore();
-    std::getline(std::cin, eventName);
-
-    do {
-        Question q;
-        std::cout << "Enter the question: ";
-        std::getline(std::cin, q.questionText);
-
-        int numOptions;
-        std::cout << "Enter the number of options: ";
-        std::cin >> numOptions;
-        std::cin.ignore();
-
-        for (int i = 0; i < numOptions; ++i) {
-            std::string option;
-            std::cout << "Enter option " << (i + 1) << ": ";
-            std::getline(std::cin, option);
-            q.options.push_back(option);
-        }
-
-        std::cout << "Enter the number of the correct option: ";
-        std::cin >> q.correctOption;
-        std::cin.ignore();
-
-        questions.push_back(q);
-
-        std::cout << "Do you want to add another question? (y/n): ";
-        std::cin >> addMoreQuestions;
-        std::cin.ignore();
-
-    } while (addMoreQuestions == 'y' || addMoreQuestions == 'Y');
-    std::cout << "\nTest for event '" << eventName << "':\n";
-    for (size_t i = 0; i < questions.size(); ++i) {
-        std::cout << "Q" << (i + 1) << ": " << questions[i].questionText << "\n";
-        for (size_t j = 0; j < questions[i].options.size(); ++j) {
-            std::cout << "  " << (j + 1) << ". " << questions[i].options[j] << "\n";
-        }
-        std::cout << "Correct option: " << questions[i].correctOption << "\n";
-    }
-}
 void viewEventDetails() {
     std::string day, month, year, eventName;
     std::cout << "Enter date of event to view details (DD MM YYYY): ";

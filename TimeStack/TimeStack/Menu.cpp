@@ -51,6 +51,10 @@ void startWindow()
             break;
         case 10:
             system("cls");
+            takeTest();
+            break;
+        case 11:
+            system("cls");
             gameOn = false;
             break;
         default:
@@ -89,5 +93,6 @@ void showMenu()
     std::cout << "7. Search events" << std::endl;
     std::cout << "8. View event details" << std::endl;
     std::cout << "9. Export events" << std::endl;
-    std::cout << "10. Exit" << std::endl;
+    std::cout << "10. Take test" << std::endl;
+    std::cout << "11. Exit" << std::endl;
 }
