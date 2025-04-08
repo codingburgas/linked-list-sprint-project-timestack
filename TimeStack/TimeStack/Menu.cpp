@@ -71,28 +71,82 @@ void startWindow()
 
 void showMenu()
 {
-    std::cout << " _________  ___  _____ ______   _______   ________  _________  ________  ________  ___  __        " << std::endl;
-    std::cout << " \\___   ___\\\\  \\|\\   _ \\  _   \\|\\  ___ \\ |\\   ____\\|\\___   ___\\\\   __  \\|\\   ____\\|\\  \\|\\  \\      " << std::endl;
-    std::cout << "\\|___ \\  \\_\\ \\  \\ \\  \\\\\\__\\ \\  \\ \\   __/|\\ \\  \\___|\\|___ \\  \\_\\ \\  \\|\\  \\ \\  \\___|\\ \\  \\/  /|_    " << std::endl;
-    std::cout << "     \\ \\  \\ \\ \\  \\ \\  \\\\|__| \\  \\ \\  \\_|/_\\ \\_____  \\   \\ \\  \\ \\ \\   __  \\ \\  \\    \\ \\   ___  \\   " << std::endl;
-    std::cout << "      \\ \\  \\ \\ \\  \\ \\  \\    \\ \\  \\ \\  \\_|\\ \\|____|\\  \\   \\ \\  \\ \\ \\  \\ \\  \\ \\  \\____\\ \\  \\\\ \\  \\  " << std::endl;
-    std::cout << "       \\ \\__\\ \\ \\__\\ \\__\\    \\ \\__\\ \\_______\\____\\_\\  \\   \\ \\__\\ \\ \\__\\ \\__\\ \\_______\\ \\__\\\\ \\__\\ " << std::endl;
-    std::cout << "        \\|__|  \\|__|\\|__|     \\|__|\\|_______|\\_________\\   \\|__|  \\|__|\\|__|\\|_______|\\|__| \\|__| " << std::endl;
-    std::cout << "                                             \\|_________|                                         " << std::endl;
+    const char* logo[] = {
+        " _________  ___  _____ ______   _______   ________  _________  ________  ________  ___  __     ",
+        " \\___   ___\\\\  \\|\\   _ \\  _   \\|\\  ___ \\ |\\   ____\\|\\___   ___\\\\   __  \\|\\   ____\\|\\  \\|\\  \\   ",
+        "\\|___ \\  \\_\\ \\  \\ \\  \\\\\\__\\ \\  \\ \\   __/|\\ \\  \\___|\\|___ \\  \\_\\ \\  \\|\\  \\ \\  \\___|\\ \\  \\/  /|_ ",
+        "     \\ \\  \\ \\ \\  \\ \\  \\\\|__| \\  \\ \\  \\_|/_\\ \\_____  \\   \\ \\  \\ \\ \\   __  \\ \\  \\    \\ \\   ___  \\ ",
+        "      \\ \\  \\ \\ \\  \\ \\  \\    \\ \\  \\ \\  \\_|\\ \\|____|\\  \\   \\ \\  \\ \\ \\  \\ \\  \\ \\  \\____\\ \\  \\\\ \\  \\|",
+        "       \\ \\__\\ \\ \\__\\ \\__\\    \\ \\__\\ \\_______\\____\\_\\  \\   \\ \\__\\ \\ \\__\\ \\__\\ \\_______\\ \\__\\\\ \\__\\",
+        "        \\|__|  \\|__|\\|__|     \\|__|\\|_______|\\_________\\   \\|__|  \\|__|\\|__|\\|_______|\\|__| \\|__|"
+    };
 
-    std::cout << std::string(100, '_') << "\n\n\n";
+    // Determine content width based on logo
+    int maxLogoWidth = 0;
+    for (const char* line : logo) {
+        int len = strlen(line);
+        if (len > maxLogoWidth) maxLogoWidth = len;
+    }
 
-    std::cout << "Choose option." << std::endl;
-    std::cout << std::endl;
-    std::cout << "1. Add an event" << std::endl;
-    std::cout << "2. Edit an event" << std::endl;
-    std::cout << "3. Delete an event" << std::endl;
-    std::cout << "4. List events" << std::endl;
-    std::cout << "5. Sort events" << std::endl;
-    std::cout << "6. Create test for an event" << std::endl;
-    std::cout << "7. Search events" << std::endl;
-    std::cout << "8. View event details" << std::endl;
-    std::cout << "9. Export events" << std::endl;
-    std::cout << "10. Take test" << std::endl;
-    std::cout << "11. Exit" << std::endl;
+    int sidePadding = 4;
+    int contentWidth = maxLogoWidth + sidePadding * 2;
+
+    auto pad = [](int count) { for (int i = 0; i < count; ++i) std::cout << ' '; };
+
+    // Top border
+    std::cout << "+" << std::string(contentWidth, '_') << "+\n";
+    std::cout << "|"; pad(contentWidth); std::cout << "|\n";
+
+    // Logo
+    for (const char* line : logo) {
+        int len = strlen(line);
+        int space = contentWidth - len;
+        int left = space / 2;
+        int right = space - left;
+
+        std::cout << "|";
+        pad(left);
+        std::cout << line;
+        pad(right);
+        std::cout << "|\n";
+    }
+
+    // Space below logo
+    std::cout << "|"; pad(contentWidth); std::cout << "|\n";
+    std::cout << "+" << std::string(contentWidth, '_') << "+\n";
+    std::cout << "|"; pad(contentWidth); std::cout << "|\n";
+
+    // Menu items
+    const char* menu[] = {
+        "[1]  Add an event",        "[2]  Edit an event",        "[3]  Delete an event",
+        "[4]  List all events",     "[5]  Sort events",          "[6]  Create test for event",
+        "[7]  Search events",       "[8]  View event details",   "[9]  Export events",
+        "[10] Exit"
+    };
+
+    const int columns = 3;
+    const int itemCount = sizeof(menu) / sizeof(menu[0]);
+    const int itemWidth = contentWidth / columns;
+
+    for (int i = 0; i < itemCount; i += columns) {
+        std::cout << "|";
+        for (int j = 0; j < columns; ++j) {
+            int idx = i + j;
+            if (idx < itemCount) {
+                int len = strlen(menu[idx]);
+                std::cout << " " << menu[idx];
+                pad(itemWidth - len - 1);
+            }
+            else {
+                pad(itemWidth);
+            }
+        }
+        std::cout << "|\n";
+        std::cout << "|"; pad(contentWidth); std::cout << "|\n";
+    }
+
+    // Bottom border
+    std::cout << "+" << std::string(contentWidth, '_') << "+\n";
+
+    std::cout << "\nSelect an option by number: ";
 }
