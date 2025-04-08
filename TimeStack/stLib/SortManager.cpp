@@ -4,28 +4,32 @@ void bubbleSort(int sortBy) {
     if (head == nullptr || head->next == nullptr) return;
 
     bool swapped;
-    Event* temp;
-    Event* last = nullptr;
+    Event* current;
+    Event* lastSorted = nullptr;
 
     do {
         swapped = false;
-        temp = head;
+        current = head;
 
-        while (temp->next != last) {
-            bool condition = false;
+        while (current->next != lastSorted) {
+            bool shouldSwap = false;
 
             switch (sortBy) {
             case 1: // Year
-                if (temp->date.substr(6, 4) > temp->next->date.substr(6, 4)) condition = true;
+                if (current->date.substr(6, 4) > current->next->date.substr(6, 4))
+                    shouldSwap = true;
                 break;
             case 2: // Month
-                if (temp->date.substr(3, 2) > temp->next->date.substr(3, 2)) condition = true;
+                if (current->date.substr(3, 2) > current->next->date.substr(3, 2))
+                    shouldSwap = true;
                 break;
             case 3: // Day
-                if (temp->date.substr(0, 2) > temp->next->date.substr(0, 2)) condition = true;
+                if (current->date.substr(0, 2) > current->next->date.substr(0, 2))
+                    shouldSwap = true;
                 break;
             case 4: // Name
-                if (temp->name > temp->next->name) condition = true;
+                if (current->name > current->next->name)
+                    shouldSwap = true;
                 break;
             default:
                 std::cout << "Invalid sort option!\n";
@@ -36,21 +40,23 @@ void bubbleSort(int sortBy) {
                 return;
             }
 
-            if (condition) {
-                std::swap(temp->date, temp->next->date);
-                std::swap(temp->name, temp->next->name);
-                std::swap(temp->description, temp->next->description);
+            if (shouldSwap) {
+                std::swap(current->date, current->next->date);
+                std::swap(current->name, current->next->name);
+                std::swap(current->description, current->next->description);
                 swapped = true;
             }
 
-            temp = temp->next;
+            current = current->next;
         }
 
-        last = temp;
+        lastSorted = current;
     } while (swapped);
 }
 
+
 void sortEvents() {
+    loadEvents();  // <-- Make sure this is here
 
     int option;
     std::cout << "Sort events by:\n";
